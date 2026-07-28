@@ -39,12 +39,17 @@ OPENAI_API_KEY=your_openai_api_key
 ### Step 3: Set Up Pinecone (Free Tier)
 
 1. Sign up at [Pinecone](https://www.pinecone.io/) (free tier includes 1 index)
-2. Create a new index with these settings:
-    - **Name**: Choose a name (use this as PINECONE_INDEX_NAME in .env)
-    - **Dimensions**: 512 (for OpenAI text-embedding-3-small)
-    - **Metric**: cosine
-    - **Cloud**: Any region (e.g., aws/us-east-1)
-3. Copy your API key from the Pinecone console to your .env file
+2. Copy your API key from the Pinecone console into your `.env`
+3. Pick an index name and set it as `PINECONE_INDEX_NAME` in your `.env`
+
+You don't need to create the index by hand. `yarn upload` (Step 5) creates it
+for you, reading the dimension straight from the vector file.
+
+If you'd rather create it yourself in the console, use:
+
+-   **Dimensions**: 1536 (the vectors in `output/` are 1536d)
+-   **Metric**: cosine
+-   **Cloud**: any region (e.g. aws/us-east-1)
 
 ### Step 4: Get OpenAI API Key
 

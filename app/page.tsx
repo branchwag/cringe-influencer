@@ -7,6 +7,7 @@ import {
 	searchWithRerank,
 	type Document,
 } from '../actions/search';
+import { EMBEDDING_DIMENSIONS } from '../libs/config';
 
 export default function Home() {
 	const [query, setQuery] = useState('');
@@ -55,7 +56,9 @@ export default function Home() {
 				<li className='list-item'>
 					Pinecone vector database integration
 				</li>
-				<li className='list-item'>OpenAI embeddings (1536d)</li>
+				<li className='list-item'>
+					OpenAI embeddings ({EMBEDDING_DIMENSIONS}d)
+				</li>
 				<li className='list-item'>LLM-based re-ranking comparison</li>
 				<li className='list-item'>Beautiful 1995-era styling</li>
 			</ul>
