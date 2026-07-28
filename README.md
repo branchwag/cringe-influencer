@@ -8,23 +8,72 @@ A Next.js application that uses RAG (Retrieval Augmented Generation) to search t
 
 ## ⚠️ Where this differs from the original
 
-**The original uses OpenAI for embeddings. This fork does not — it runs
-`nomic-embed-text` locally through [Ollama](https://ollama.com) instead.**
+Everything below is a change from [projectshft/cringe-influencer](https://github.com/projectshft/cringe-influencer).
+Pinecone is the one piece that's unchanged — it still stores the vectors and
+provides the reranking model, and still needs an API key.
 
-What that changes for you:
+### 1. Embeddings run locally, not on OpenAI
+
+**The original uses OpenAI for embeddings. This fork runs `nomic-embed-text`
+locally through [Ollama](https://ollama.com) instead.**
 
 -   **No OpenAI API key, and no cost per query.** Embedding runs on your own
     machine.
 -   **You must have Ollama installed and the model pulled** on whatever machine
     runs this, including wherever you deploy it. There is no hosted fallback —
-    if Ollama isn't reachable, search will fail with an error telling you so.
+    if Ollama isn't reachable, search fails with an error telling you so.
 -   **Vectors are 768-dimensional**, not 1536. `nomic-embed-text` has a fixed
     output size, so the Pinecone index must be created at 768.
--   **The vectors in `output/` were regenerated** with `nomic-embed-text`. They
-    are not the ones from the original repo, which were OpenAI's.
+-   **The vectors in `output/` were regenerated.** They are not the ones from
+    the original repo, which were OpenAI's.
+-   nomic's `search_query:` / `search_document:` task prefixes are applied
+    inside `libs/ollama.ts` so call sites can't forget them.
 
-Pinecone is unchanged, and still needs an API key — it stores the vectors and
-provides the reranking model.
+### 2. The corpus is deduplicated
+
+The source CSV contains a lot of reposted content — the same post truncated or
+expanded, figures updated between postings ("over 500 developers" → "about 700
+developers"), and the same anecdote with the subject swapped. Duplicates crowd
+each other out of the results, so `yarn embed` now drops near-duplicates at
+cosine ≥ 0.97 (`DEDUPE_SIMILARITY_THRESHOLD` in `libs/config.ts`), keeping the
+highest-impression copy of each.
+
+Exact text matching only finds 11 of these out of 820, so the check has to be
+similarity-based. The threshold was picked by inspection: everything from 0.97
+up is a genuine repost, while by 0.90 it starts merging distinct posts on a
+shared topic. At 0.97 this drops **101 posts, leaving 719**.
+
+The effect is visible in results. Searching "hiring junior engineers" used to
+return the same "Junior developers are inherently risky" post three times in
+the top five; now it appears once and the freed slots hold different posts.
+
+`data/brian_posts.csv` is left untouched — dedup happens in the pipeline, so
+changing the threshold only means re-running `yarn embed`.
+
+### 3. Bugs fixed from the original
+
+These were all present in the upstream repo:
+
+-   **Search could never return anything.** Queries embedded at 512 dimensions
+    while the shipped vectors were 1536, so Pinecone rejected every query on
+    dimension mismatch.
+-   **The index name was hardcoded** to `'brian-clone'` in all four query
+    paths, so setting `PINECONE_INDEX_NAME` only affected the upload script.
+-   **`yarn embed` couldn't run.** It pointed at
+    `../mini_rag/app/data/brian_posts.csv`, a path that only existed on the
+    original author's machine. The file ships here as `data/brian_posts.csv`.
+-   **Custom theme colours silently didn't work.** Tailwind v4 is CSS-first and
+    doesn't auto-load `tailwind.config.js`, so `@apply text-craigslist-blue`
+    failed and links rendered unstyled. Moved to a `@theme` block.
+
+### 4. Housekeeping
+
+-   **Dependencies patched.** `yarn audit` went from 2 critical and 27 high
+    advisories to zero, including an RCE in Next.js. (Sent upstream as a PR.)
+-   **All TypeScript.** The libs existed as parallel `.ts` and `.js` copies;
+    Next resolved the `.js` one while `tsc` resolved the `.ts` one, so the file
+    being typechecked was never the file that ran. The `.js` copies are gone and
+    the scripts run as `.ts` under Node's native type stripping.
 
 ## 🚀 Quick Start
 

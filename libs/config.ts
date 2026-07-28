@@ -13,3 +13,17 @@
 export const EMBEDDING_DIMENSIONS = 768;
 
 export const EMBEDDING_MODEL = 'nomic-embed-text';
+
+// Cosine similarity at or above which two posts are treated as the same post
+// and the lower-engagement one is dropped before upload.
+//
+// The corpus contains a lot of reposts: the same post truncated or expanded,
+// updated figures ("over 500 developers" -> "about 700 developers"), and the
+// same anecdote with the subject swapped. Exact text matching only finds 11 of
+// these out of 820, so the check has to be similarity-based.
+//
+// 0.97 was chosen by inspection. Everything from 0.97 up is a genuine repost.
+// By 0.90 it starts merging distinct posts on a shared topic, e.g. "A 4 step
+// guide to creating a side project" with "The recipe for an amazing side
+// project", which are different posts and should both be kept.
+export const DEDUPE_SIMILARITY_THRESHOLD = 0.97;
