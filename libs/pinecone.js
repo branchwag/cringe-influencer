@@ -7,6 +7,12 @@ const pc = new Pinecone({
 	apiKey: process.env.PINECONE_API_KEY ?? '',
 });
 
+// NOTE: this file and pinecone.ts are parallel copies. The Next app and the
+// node scripts both resolve the .js one, while tsc resolves the .ts one, so
+// any export added to one must be added to the other or it silently resolves
+// to undefined at runtime.
+export const INDEX_NAME = process.env.PINECONE_INDEX_NAME ?? '';
+
 /**
  * @typedef {Object} VectorRecord
  * @property {string} id

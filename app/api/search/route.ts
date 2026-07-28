@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createEmbedding } from '../../../libs/openai';
-import {
-	queryVectors,
-	INDEX_NAME,
-	EMBEDDING_DIMENSIONS,
-} from '../../../libs/pinecone';
+import { embedQuery } from '../../../libs/ollama';
+import { queryVectors, INDEX_NAME } from '../../../libs/pinecone';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -19,10 +15,7 @@ export async function POST(request: NextRequest) {
 
 		console.log(`Searching for: "${query}"`);
 
-		const queryEmbedding = await createEmbedding(
-			query,
-			EMBEDDING_DIMENSIONS
-		);
+		const queryEmbedding = await embedQuery(query);
 
 		const results = await queryVectors(
 			INDEX_NAME,

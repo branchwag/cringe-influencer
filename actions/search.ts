@@ -1,11 +1,10 @@
 'use server';
 
-import { createEmbedding } from '../libs/openai';
+import { embedQuery } from '../libs/ollama';
 import {
 	queryVectors,
 	rerank,
 	INDEX_NAME,
-	EMBEDDING_DIMENSIONS,
 	type RerankInputDocument,
 } from '../libs/pinecone';
 
@@ -39,10 +38,7 @@ export async function basicSearch(
 	topK: number = 5
 ): Promise<SearchResult> {
 	try {
-		const queryEmbedding = await createEmbedding(
-			query,
-			EMBEDDING_DIMENSIONS
-		);
+		const queryEmbedding = await embedQuery(query);
 
 		const results = await queryVectors(
 			INDEX_NAME,
@@ -88,10 +84,7 @@ export async function searchWithRerank(
 			throw new Error('Query is required');
 		}
 
-		const queryEmbedding = await createEmbedding(
-			query,
-			EMBEDDING_DIMENSIONS
-		);
+		const queryEmbedding = await embedQuery(query);
 
 		const results = await queryVectors(
 			INDEX_NAME,

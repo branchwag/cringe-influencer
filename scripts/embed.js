@@ -1,5 +1,5 @@
 import { processCsv } from '../libs/csv-processor.js';
-import { createEmbeddings } from '../libs/openai.js';
+import { embedDocuments } from '../libs/ollama.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -13,7 +13,7 @@ async function main() {
 
 		console.log('Creating embeddings...');
 		const texts = posts.map((post) => post.text);
-		const embeddings = await createEmbeddings(texts, 1536);
+		const embeddings = await embedDocuments(texts);
 
 		console.log('Preparing vectors for Pinecone...');
 		const vectors = posts.map((post, index) => ({
