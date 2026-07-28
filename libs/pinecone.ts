@@ -12,6 +12,13 @@ const pc = new Pinecone({
 	apiKey: process.env.PINECONE_API_KEY ?? '',
 });
 
+export const INDEX_NAME = process.env.PINECONE_INDEX_NAME ?? '';
+
+// text-embedding-3-small, matching the dimension of the vectors in
+// output/brian_posts_vectors.json. Queries must use the same dimension
+// as the index they hit.
+export const EMBEDDING_DIMENSIONS = 1536;
+
 export interface VectorRecord {
 	id: string;
 	values: number[];

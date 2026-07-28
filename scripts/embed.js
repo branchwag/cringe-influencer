@@ -13,7 +13,7 @@ async function main() {
 
 		console.log('Creating embeddings...');
 		const texts = posts.map((post) => post.text);
-		const embeddings = await createEmbeddings(texts, 512);
+		const embeddings = await createEmbeddings(texts, 1536);
 
 		console.log('Preparing vectors for Pinecone...');
 		const vectors = posts.map((post, index) => ({

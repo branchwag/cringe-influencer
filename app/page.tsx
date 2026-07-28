@@ -55,7 +55,7 @@ export default function Home() {
 				<li className='list-item'>
 					Pinecone vector database integration
 				</li>
-				<li className='list-item'>OpenAI embeddings (512d)</li>
+				<li className='list-item'>OpenAI embeddings (1536d)</li>
 				<li className='list-item'>LLM-based re-ranking comparison</li>
 				<li className='list-item'>Beautiful 1995-era styling</li>
 			</ul>

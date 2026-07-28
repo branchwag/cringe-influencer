@@ -1,15 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createEmbedding } from '../../../libs/openai';
-import { queryVectors, rerank } from '../../../libs/pinecone';
+import {
+	queryVectors,
+	rerank,
+	INDEX_NAME,
+	EMBEDDING_DIMENSIONS,
+} from '../../../libs/pinecone';
 
 export async function POST(request: NextRequest) {
 	try {
 		const { query, topK = 10 } = await request.json();
 
-		const queryEmbedding = await createEmbedding(query, 512);
+		const queryEmbedding = await createEmbedding(
+			query,
+			EMBEDDING_DIMENSIONS
+		);
 
 		const results = await queryVectors(
-			'brian-clone',
+			INDEX_NAME,
 			queryEmbedding,
 			topK,
 			true

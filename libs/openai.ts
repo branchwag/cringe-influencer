@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 export async function createEmbedding(
 	text: string,
-	dimensions: number = 512
+	dimensions: number = 1536
 ): Promise<number[]> {
 	try {
 		const response = await openai.embeddings.create({
@@ -27,7 +27,7 @@ export async function createEmbedding(
 
 export async function createEmbeddings(
 	texts: string[],
-	dimensions: number = 512
+	dimensions: number = 1536
 ): Promise<number[][]> {
 	try {
 		const response = await openai.embeddings.create({

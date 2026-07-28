@@ -4,6 +4,8 @@ import { createEmbedding } from '../libs/openai';
 import {
 	queryVectors,
 	rerank,
+	INDEX_NAME,
+	EMBEDDING_DIMENSIONS,
 	type RerankInputDocument,
 } from '../libs/pinecone';
 
@@ -37,10 +39,13 @@ export async function basicSearch(
 	topK: number = 5
 ): Promise<SearchResult> {
 	try {
-		const queryEmbedding = await createEmbedding(query, 512);
+		const queryEmbedding = await createEmbedding(
+			query,
+			EMBEDDING_DIMENSIONS
+		);
 
 		const results = await queryVectors(
-			'brian-clone',
+			INDEX_NAME,
 			queryEmbedding,
 			topK,
 			true
@@ -83,10 +88,13 @@ export async function searchWithRerank(
 			throw new Error('Query is required');
 		}
 
-		const queryEmbedding = await createEmbedding(query, 512);
+		const queryEmbedding = await createEmbedding(
+			query,
+			EMBEDDING_DIMENSIONS
+		);
 
 		const results = await queryVectors(
-			'brian-clone',
+			INDEX_NAME,
 			queryEmbedding,
 			topK,
 			true
