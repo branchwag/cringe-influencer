@@ -6,7 +6,7 @@ import path from 'path';
 async function main() {
 	try {
 		console.log('Processing CSV file...');
-		const csvPath = '../mini_rag/app/data/brian_posts.csv';
+		const csvPath = 'data/brian_posts.csv';
 		const posts = await processCsv(csvPath);
 
 		console.log(`Found ${posts.length} valid posts`);
