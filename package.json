@@ -9,7 +9,8 @@
 		"build": "next build",
 		"start": "next start",
 		"embed": "node scripts/embed.ts",
-		"upload": "node scripts/upload-to-pinecone.ts"
+		"upload": "node scripts/upload-to-pinecone.ts",
+		"eval": "node scripts/eval.ts"
 	},
 	"dependencies": {
 		"@pinecone-database/pinecone": "6.1.2",
