@@ -1,10 +1,24 @@
 # Cringe Influencer RAG
 
-This is my go at [Brian Jenney's](https://github.com/projectshft) Cringe Influencer RAG tutorial, forked from [projectshft/cringe-influencer](https://github.com/projectshft/cringe-influencer). The original build, the walkthrough video, and the data are all his; I'm tinkering on top of it. Everything below is his write-up unless noted otherwise.
+This is my go at [Brian Jenney's](https://github.com/projectshft) Cringe Influencer RAG tutorial, forked from [projectshft/cringe-influencer](https://github.com/projectshft/cringe-influencer). The original build, the walkthrough video, and the data are all his; I'm tinkering on top of it.
+
+The setup steps started as his and have been edited where this fork diverges. The "Where this differs" section is mine, and lists every change.
 
 A Next.js application that uses RAG (Retrieval Augmented Generation) to search through LinkedIn posts, create embeddings, and generate content in an authentic voice.
 
 [Live Walkthrough Video](https://share.descript.com/view/JNWta1T8TKX)
+
+> **Note:** that video is Brian's, and it walks through the *original* build —
+> OpenAI embeddings, 1536 dimensions, no dedup step. This fork embeds locally
+> with Ollama at 768 dimensions, so the setup it demonstrates no longer matches
+> the code here. It's still the best explanation of how the thing works
+> conceptually; just don't follow it as setup instructions. Use the Quick Start
+> below for that, and the "Where this differs" section for what changed.
+
+> **Note on the data:** `data/brian_posts.csv` is Brian's — 820 of his own
+> LinkedIn posts, carried over from the original repo. The embeddings in
+> `output/` were regenerated on my machine, but the content they describe is
+> still his. Everything in the app is searching his writing, not mine.
 
 ## ⚠️ Where this differs from the original
 
@@ -203,7 +217,8 @@ Visit [http://localhost:3000](http://localhost:3000) to use the application.
 -   `app/` - Next.js application files
     -   `api/` - API routes for search and re-ranking
     -   `components/` - React components
--   `data/` - Source data files
+-   `data/` - Source data files (`brian_posts.csv` is Brian's LinkedIn posts,
+    from the original repo)
 -   `libs/` - Utility libraries for Ollama embeddings and Pinecone
 -   `scripts/` - Scripts for embedding and uploading vectors
 -   `output/` - Generated vector files
