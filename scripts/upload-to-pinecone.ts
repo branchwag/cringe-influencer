@@ -1,4 +1,4 @@
-import { upsertVectors } from '../libs/pinecone.js';
+import { upsertVectors, type VectorRecord } from '../libs/pinecone.ts';
 import { Pinecone } from '@pinecone-database/pinecone';
 import fs from 'fs';
 import path from 'path';
@@ -7,10 +7,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const pc = new Pinecone({
-	apiKey: process.env.PINECONE_API_KEY,
+	apiKey: process.env.PINECONE_API_KEY ?? '',
 });
 
-async function createIndexIfNeeded(indexName, dimension) {
+async function createIndexIfNeeded(
+	indexName: string,
+	dimension: number
+): Promise<boolean> {
 	try {
 		const indexList = await pc.listIndexes();
 		const existingIndex = indexList.indexes?.find(
@@ -68,7 +71,7 @@ async function uploadVectorsToPinecone() {
 
 		console.log('Loading vectors from file...');
 		const vectorsData = fs.readFileSync(vectorsPath, 'utf8');
-		const vectors = JSON.parse(vectorsData);
+		const vectors: VectorRecord[] = JSON.parse(vectorsData);
 
 		if (vectors.length === 0) {
 			throw new Error('No vectors found in file');
@@ -79,7 +82,11 @@ async function uploadVectorsToPinecone() {
 			`Found ${vectors.length} vectors with dimension ${dimension}`
 		);
 
-		const indexName = process.env.PINECONE_INDEX_NAME;
+		const indexName = process.env.PINECONE_INDEX_NAME ?? '';
+
+		if (!indexName) {
+			throw new Error('PINECONE_INDEX_NAME is not set in your .env');
+		}
 		const indexReady = await createIndexIfNeeded(indexName, dimension);
 
 		if (!indexReady) {

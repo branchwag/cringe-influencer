@@ -1,5 +1,8 @@
-import {
-	Pinecone,
+import { Pinecone } from '@pinecone-database/pinecone';
+// Type-only, so they must be imported with `import type`. Node's type
+// stripping is purely syntactic and cannot tell a type from a value, so a
+// plain named import here fails at runtime against the CommonJS package.
+import type {
 	RecordMetadata,
 	RerankResult,
 	ScoredPineconeRecord,
@@ -12,10 +15,6 @@ const pc = new Pinecone({
 	apiKey: process.env.PINECONE_API_KEY ?? '',
 });
 
-// NOTE: this file and pinecone.js are parallel copies. The Next app and the
-// node scripts both resolve the .js one, while tsc resolves the .ts one, so
-// any export added to one must be added to the other or it silently resolves
-// to undefined at runtime.
 export const INDEX_NAME = process.env.PINECONE_INDEX_NAME ?? '';
 
 export interface VectorRecord {

@@ -1,5 +1,5 @@
-import { processCsv } from '../libs/csv-processor.js';
-import { embedDocuments } from '../libs/ollama.js';
+import { processCsv } from '../libs/csv-processor.ts';
+import { embedDocuments } from '../libs/ollama.ts';
 import fs from 'fs';
 import path from 'path';
 

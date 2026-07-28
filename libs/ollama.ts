@@ -1,4 +1,4 @@
-import { EMBEDDING_MODEL } from './config';
+import { EMBEDDING_MODEL } from './config.ts';
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST ?? 'http://localhost:11434';
 
