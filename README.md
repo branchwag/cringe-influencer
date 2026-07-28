@@ -1,5 +1,7 @@
 # Cringe Influencer RAG
 
+This is my go at [Brian Jenney's](https://github.com/projectshft) Cringe Influencer RAG tutorial, forked from [projectshft/cringe-influencer](https://github.com/projectshft/cringe-influencer). The original build, the walkthrough video, and the data are all his; I'm tinkering on top of it. Everything below is his write-up unless noted otherwise.
+
 A Next.js application that uses RAG (Retrieval Augmented Generation) to search through LinkedIn posts, create embeddings, and generate content in an authentic voice.
 
 [Live Walkthrough Video](https://share.descript.com/view/JNWta1T8TKX)
@@ -16,9 +18,9 @@ A Next.js application that uses RAG (Retrieval Augmented Generation) to search t
 ### Step 1: Clone and Install
 
 ```bash
-git clone https://github.com/yourusername/cringe-influencer-rag.git
-cd cringe-influencer-rag
-yarn install
+git clone https://github.com/branchwag/cringe-influencer.git
+cd cringe-influencer
+yarn install --frozen-lockfile
 ```
 
 ### Step 2: Set Up Environment Variables
