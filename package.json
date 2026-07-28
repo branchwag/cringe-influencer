@@ -2,13 +2,12 @@
 	"name": "cringe-influencer-rag",
 	"version": "1.0.0",
 	"description": "RAG app for embedding LinkedIn posts and generating vectors for Pinecone",
-	"main": "index.js",
+	"private": true,
 	"type": "module",
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
 		"embed": "node scripts/embed.ts",
 		"upload": "node scripts/upload-to-pinecone.ts"
 	},
@@ -23,7 +22,6 @@
 	},
 	"resolutions": {
 		"tar": "^7.5.22",
-		"diff": "^4.0.4",
 		"sharp": "^0.35.3",
 		"postcss": "^8.5.23"
 	},
@@ -44,7 +42,6 @@
 		"tailwindcss": "4.1.11",
 		"@tailwindcss/postcss": "4.1.11",
 		"postcss": "^8.5.23",
-		"autoprefixer": "^10.4.0",
-		"ts-node": "^10.9.2"
+		"autoprefixer": "^10.4.0"
 	}
 }
